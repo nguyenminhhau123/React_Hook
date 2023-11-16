@@ -5,12 +5,13 @@ import PostList from "./components/PostList";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import queryString from "query-string";
+import PostFilterForm from "./components/PostFilterForm";
 function App() {
   let [postList, setPostList] = useState([]);
   let [pagination, setPagination] = useState({
     _page: 1,
     _limit: 10,
-    _totalRows: 50,
+    _totalRows: 1,
   });
   let [filters, setFilters] = useState({
     _limit: 10,
@@ -42,10 +43,19 @@ function App() {
       _page: newPage,
     });
   };
+  let handleFiltersChange = (newFilters) => {
+    // console.log("data", newFilters);
+    setFilters({
+      ...filters,
+      _page: 1,
+      title_like: newFilters.searchTerm,
+    });
+  };
   return (
     <div className="App">
       {/* <TodoList /> */}
       <h2>POST-LIST</h2>
+      <PostFilterForm onsubmit={handleFiltersChange} />
       <PostList postList={postList} />
       <Pagination pagination={pagination} onChangePage={handleOnChangePage} />
     </div>
